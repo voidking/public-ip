@@ -1,24 +1,21 @@
 $(function(){
-  String.prototype.replaceAll  = function(s1,s2){     
-    return this.replace(new RegExp(s1,"gm"),s2);     
-  }
-
   $.ajax({
-    url: 'http://ip.chinaz.com/getip.aspx',
+    url: 'http://pv.sohu.com/cityjson?ie=utf-8',
     type: 'GET',
     data: {},
     success: function(data){
       console.log(data);
-      data = data.replace("ip","'ip'");
-      data = data.replace("address","'address'");
-      data = data.replaceAll("\'","\"");
-      console.log(data);
-      var dataJson = JSON.parse(data);
-      $('#ip').val(dataJson.ip);
-      $('#address').val(dataJson.address);
     },
     error: function(xhr){
       console.log(xhr);
+      console.log(xhr.responseText);
+      console.log("var returnCitySN = ".length);
+      var str = xhr.responseText.substring(18);
+      str = str.slice(0,str.length-1);
+      var res = JSON.parse(str);
+      console.log(res);
+      $('#ip').val(res.cip);
+      $('#address').val(res.cname);
     }
   });
   
